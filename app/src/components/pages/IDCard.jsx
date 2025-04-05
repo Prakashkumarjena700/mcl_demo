@@ -6,7 +6,7 @@ const IDCard = () => {
   const user = encryptionModule.becryptData("user");
 
   return (
-    <div className="w-full h-screen overflow-x-scroll py-6 bg-gray-50">
+    <div className="w-full h-screen overflow-x-scroll pb-20 bg-gray-50">
       <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
         Employee ID Card
       </h2>

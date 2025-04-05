@@ -11,8 +11,8 @@ import {
 } from "lucide-react";
 import { Dialog } from "@headlessui/react";
 import { toast } from "react-toastify";
-import logo from "../../assets/Only_Logo.png";
-
+import logo from "../../assets/Logo.png";
+import logo_s from "../../assets/Only_Logo.png";
 
 const AdminLayout = ({ children }) => {
   const userLs = encryptionModule.becryptData("user");
@@ -46,26 +46,28 @@ const AdminLayout = ({ children }) => {
     <div className="flex min-h-screen overflow-hidden">
       {/* Sidebar */}
       <div
-  className={`transition-all duration-300 ease-in-out ${
-    isCollapsed ? "w-16" : "w-56"
-  } bg-gray-800 text-white p-4 flex flex-col relative`}
->
-
+        className={`transition-all duration-300 ease-in-out ${
+          isCollapsed ? "w-16" : "w-56"
+        } bg-gray-800 text-white p-4 flex flex-col relative`}
+      >
         {/* Logo */}
         {!isCollapsed && (
           <img
             src={logo}
             alt="Qlith Logo"
-            className="h-10 w-10 object-contain"
+            className=" w-[60%] object-contain mt-2"
           />
-        )}
+        )
+        }
 
         {/* Collapse Button */}
         <button
           onClick={toggleSidebar}
-          className={`${isCollapsed?"mb-6 mr-1.5 mt-2":"relative bottom-8"} focus:outline-none self-end`}
+          className={`${
+            isCollapsed ? "mb-6 mr-1.5 mt-2" : "relative bottom-10"
+          } focus:outline-none self-end`}
         >
-          {isCollapsed ? <MenuIcon size={20} /> : <XIcon size={20} />}
+          {isCollapsed ? <MenuIcon size={20} /> : <XIcon size={30} />}
         </button>
 
         {/* Navigation */}
