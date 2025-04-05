@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router";
 import encryptionModule from "../common/LocalStorageUtils";
+import { toast } from "react-toastify";
 
 const Home = () => {
   const [email, setEmail] = useState("");
@@ -28,6 +29,7 @@ const Home = () => {
       if (user) {
         encryptionModule.encryptData("token", token);
         encryptionModule.encryptData("user", user);
+        toast.success("Login successful");
       }
 
       if (user?.role == "admin") {
@@ -35,11 +37,9 @@ const Home = () => {
       } else {
         navigate("/profile");
       }
-
-      console.log(user, token);
     } catch (error) {
       const errMsg = error?.response?.data?.message || "Something went wrong";
-      alert(errMsg);
+      toast.error(errMsg);
     } finally {
       setLoading(false);
     }
@@ -49,7 +49,7 @@ const Home = () => {
     <div className="flex flex-col lg:flex-row min-h-screen">
       {/* Login Form Section */}
       <div className="w-full lg:w-[70%] p-6 sm:p-10 flex justify-center items-center flex-col">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-6">
+        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-6 mt-20 lg:mt-0">
           Login to Your Account
         </h2>
         <form
@@ -78,10 +78,46 @@ const Home = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-900 text-white py-2 rounded-full hover:bg-blue-800 transition-all duration-300 font-semibold"
+            disabled={loading}
+            className={`w-full flex items-center justify-center gap-2 bg-gray-800 text-white py-2 rounded-full transition-all duration-300 font-semibold ${
+              loading ? "opacity-70 cursor-not-allowed" : "hover:bg-blue-900"
+            }`}
           >
-            Login
+            {loading ? (
+              <>
+                <svg
+                  className="animate-spin h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4l3.5-3.5L12 0v4a8 8 0 00-8 8z"
+                  />
+                </svg>
+                Logging in...
+              </>
+            ) : (
+              "Login"
+            )}
           </button>
+
+          <p className="justify-center flex lg:hidden">
+            New Here?
+            <Link to="/register" className="text-blue-900 ml-1">
+              Register
+            </Link>
+          </p>
         </form>
       </div>
 

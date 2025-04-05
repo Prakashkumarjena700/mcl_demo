@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 const departments = ["HR", "IT", "Finance", "Marketing", "Operations"];
 const states = [
@@ -13,7 +13,6 @@ const states = [
 
 const Register = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -70,13 +69,12 @@ const Register = () => {
         const response = await axios.post(`${apiUrl}/users/register`, formData);
 
         if (response?.data) {
-          alert("User has been register successfully, Please login");
-          navigate("/");
+          toast.success("User has been register successfully");
         } else {
-          alert("Something went wrong");
+          toast.error("Something went wrong");
         }
       } catch (err) {
-        alert("Something went wrong");
+        toast.error("Something went wrong");
       } finally {
         setLoading(false);
       }
@@ -94,7 +92,7 @@ const Register = () => {
           className="grid grid-cols-2 gap-4 w-full px-14"
         >
           {/* Name */}
-          <div>
+          <div className="relative">
             <input
               type="text"
               name="name"
@@ -104,12 +102,14 @@ const Register = () => {
               placeholder="Name"
             />
             {errors.name && (
-              <p className="text-red-500 text-sm">{errors.name}</p>
+              <p className="text-red-500 text-xs absolute bottom-8 right-2">
+                {errors.name}
+              </p>
             )}
           </div>
 
           {/* Email */}
-          <div>
+          <div className="relative">
             <input
               type="email"
               name="email"
@@ -119,7 +119,9 @@ const Register = () => {
               placeholder="Email"
             />
             {errors.email && (
-              <p className="text-red-500 text-sm">{errors.email}</p>
+              <p className="text-red-500 text-xs absolute bottom-8 right-2 ">
+                {errors.email}
+              </p>
             )}
           </div>
 
@@ -148,7 +150,7 @@ const Register = () => {
           </div>
 
           {/* EIS No */}
-          <div>
+          <div className="relative">
             <input
               type="text"
               name="EISNo"
@@ -158,7 +160,9 @@ const Register = () => {
               placeholder="EIS No"
             />
             {errors.EISNo && (
-              <p className="text-red-500 text-sm">{errors.EISNo}</p>
+              <p className="text-red-500 text-xs absolute bottom-8 right-2 ">
+                {errors.EISNo}
+              </p>
             )}
           </div>
 
@@ -185,7 +189,7 @@ const Register = () => {
           </div>
 
           {/* Department (Dropdown) */}
-          <div>
+          <div className="relative">
             <select
               name="department"
               value={formData.department}
@@ -200,7 +204,9 @@ const Register = () => {
               ))}
             </select>
             {errors.department && (
-              <p className="text-red-500 text-sm">{errors.department}</p>
+              <p className="text-red-500 text-xs absolute bottom-8 right-2">
+                {errors.department}
+              </p>
             )}
           </div>
 
@@ -268,7 +274,7 @@ const Register = () => {
           </div>
 
           {/* Confirm Password */}
-          <div>
+          <div className="relative">
             <input
               type="password"
               name="confirmPassword"
@@ -278,7 +284,9 @@ const Register = () => {
               placeholder="Confirm Password"
             />
             {errors.confirmPassword && (
-              <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
+              <p className="text-red-500 text-xs absolute bottom-8 right-2">
+                {errors.confirmPassword}
+              </p>
             )}
           </div>
 
@@ -286,9 +294,38 @@ const Register = () => {
           <div className="col-span-2">
             <button
               type="submit"
-              className="w-full bg-blue-900 text-white py-2 rounded-full hover:bg-blue-800 transition-all duration-600 font-semibold"
+              disabled={loading}
+              className={`w-full flex items-center justify-center gap-2 bg-gray-800 text-white py-2 rounded-full transition-all duration-300 font-semibold ${
+                loading ? "opacity-70 cursor-not-allowed" : "hover:bg-blue-900"
+              }`}
             >
-              Register
+              {loading ? (
+                <>
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v4l3.5-3.5L12 0v4a8 8 0 00-8 8z"
+                    />
+                  </svg>
+                  Registering...
+                </>
+              ) : (
+                "Register"
+              )}
             </button>
           </div>
         </form>

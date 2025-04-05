@@ -3,6 +3,7 @@ import encryptionModule from "../common/LocalStorageUtils";
 import { useNavigate } from "react-router";
 import { Link } from "react-router";
 import { UsersIcon, MenuIcon, XIcon, LogOut } from "lucide-react";
+import { toast } from "react-toastify";
 
 const AdminLayout = ({ children }) => {
   const userLs = encryptionModule.becryptData("user");
@@ -22,6 +23,7 @@ const AdminLayout = ({ children }) => {
   const handelLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+    toast.success("Logout successfully.");
     navigate("/");
   };
 

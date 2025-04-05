@@ -44,8 +44,8 @@ const Users = () => {
 
   return (
     <div className="p-4 overflow-auto w-full">
-      <h1 className="text-2xl font-bold mb-4 fixed">User List</h1>
-      <table className=" p-5 max-w-[90%] min-w-full mt-16 overflow-auto text-sm text-left border border-gray-200">
+      <h1 className="text-2xl font-bold mb-4 ">User List</h1>
+      <table className=" p-5 max-w-[90%] min-w-full  overflow-auto text-sm text-left border border-gray-200">
         <thead className="text-white bg-gray-700  uppercase">
           <tr>
             <th className="p-3 border">Name</th>
@@ -102,9 +102,9 @@ const Users = () => {
                 <td className="p-3 border">
                   <div
                     className="truncate max-w-[180px]"
-                    title={new Date(user.createdAt).toLocaleString()}
+                    title={new Date(user.createdAt).toLocaleDateString()}
                   >
-                    {new Date(user.createdAt).toLocaleString()}
+                    {new Date(user.createdAt).toLocaleDateString()}
                   </div>
                 </td>
               </tr>
