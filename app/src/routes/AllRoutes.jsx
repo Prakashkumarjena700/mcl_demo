@@ -8,6 +8,7 @@ import UserLayout from "../components/layouts/UserLayout";
 import NotFound from "../components/pages/NotFound";
 import Register from "../components/pages/Register";
 import IDCard from "../components/pages/IDCard";
+import DashboardPage from "../components/pages/DashboardPage";
 
 const AllRoutes = () => {
   return (
@@ -20,6 +21,14 @@ const AllRoutes = () => {
         element={
           <AdminLayout>
             <Users />
+          </AdminLayout>
+        }
+      />
+      <Route
+        path="/admin/dashboard"
+        element={
+          <AdminLayout>
+            <DashboardPage />
           </AdminLayout>
         }
       />

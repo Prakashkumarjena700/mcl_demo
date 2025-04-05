@@ -42,17 +42,14 @@ const Register = () => {
 
   const [errors, setErrors] = useState({});
 
-  // Handle input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {};
 
-    // Validation
     if (!formData.name) newErrors.name = "Name is required";
     if (!formData.email) newErrors.email = "Email is required";
     if (!formData.password) newErrors.password = "Password is required";
@@ -70,6 +67,30 @@ const Register = () => {
 
         if (response?.data) {
           toast.success("User has been register successfully");
+          setFormData({
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+            EISNo: "",
+            dob: "",
+            department: "",
+            designation: "",
+            phoneNumber: "",
+            bloodGroup: "",
+            placeOfPosting: "",
+            aadharNo: "",
+            project: "",
+            dateOfJoining: "",
+            qualification: "",
+            state: "",
+            district: "",
+            block: "",
+            village: "",
+            pin: "",
+            landmark: "",
+            whatsAppNo: "",
+          });
         } else {
           toast.error("Something went wrong");
         }
@@ -82,14 +103,15 @@ const Register = () => {
   };
 
   return (
-    <div className="flex min-h-screen">
-      <div className="w-full lg:w-[70%] flex justify-center items-center flex-col">
-        <h2 className="text-4xl font-bold text-center mb-6">
+    <div className="flex flex-col lg:flex-row min-h-screen">
+      {/* Form Section */}
+      <div className="w-full lg:w-[70%] flex justify-center items-center flex-col py-10 px-4 sm:px-6 md:px-10">
+        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-6">
           Create an account
         </h2>
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-2 gap-4 w-full px-14"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full"
         >
           {/* Name */}
           <div className="relative">
@@ -102,7 +124,7 @@ const Register = () => {
               placeholder="Name"
             />
             {errors.name && (
-              <p className="text-red-500 text-xs absolute bottom-8 right-2">
+              <p className="text-red-500 text-xs absolute -bottom-5 right-2">
                 {errors.name}
               </p>
             )}
@@ -119,13 +141,13 @@ const Register = () => {
               placeholder="Email"
             />
             {errors.email && (
-              <p className="text-red-500 text-xs absolute bottom-8 right-2 ">
+              <p className="text-red-500 text-xs absolute -bottom-5 right-2 ">
                 {errors.email}
               </p>
             )}
           </div>
 
-          {/* Phone Number */}
+          {/* Phone */}
           <div>
             <input
               type="tel"
@@ -137,7 +159,7 @@ const Register = () => {
             />
           </div>
 
-          {/* WhatsApp Number */}
+          {/* WhatsApp */}
           <div>
             <input
               type="tel"
@@ -160,7 +182,7 @@ const Register = () => {
               placeholder="EIS No"
             />
             {errors.EISNo && (
-              <p className="text-red-500 text-xs absolute bottom-8 right-2 ">
+              <p className="text-red-500 text-xs absolute -bottom-5 right-2 ">
                 {errors.EISNo}
               </p>
             )}
@@ -188,7 +210,7 @@ const Register = () => {
             />
           </div>
 
-          {/* Department (Dropdown) */}
+          {/* Department */}
           <div className="relative">
             <select
               name="department"
@@ -204,7 +226,7 @@ const Register = () => {
               ))}
             </select>
             {errors.department && (
-              <p className="text-red-500 text-xs absolute bottom-8 right-2">
+              <p className="text-red-500 text-xs absolute -bottom-5 right-2">
                 {errors.department}
               </p>
             )}
@@ -222,7 +244,7 @@ const Register = () => {
             />
           </div>
 
-          {/* State (Dropdown) */}
+          {/* State */}
           <div>
             <select
               name="state"
@@ -250,6 +272,7 @@ const Register = () => {
               placeholder="District"
             />
           </div>
+
           <div>
             <input
               type="text"
@@ -284,14 +307,14 @@ const Register = () => {
               placeholder="Confirm Password"
             />
             {errors.confirmPassword && (
-              <p className="text-red-500 text-xs absolute bottom-8 right-2">
+              <p className="text-red-500 text-xs absolute -bottom-5 right-2">
                 {errors.confirmPassword}
               </p>
             )}
           </div>
 
           {/* Submit Button */}
-          <div className="col-span-2">
+          <div className="col-span-1 sm:col-span-2">
             <button
               type="submit"
               disabled={loading}
@@ -330,11 +353,15 @@ const Register = () => {
           </div>
         </form>
       </div>
-      <div className="w-full lg:w-[30%] min-h-screen bg-[url('/auth-bg.jpg')] bg-cover bg-center flex justify-center items-center flex-col text-white">
-        <h2 className="text-4xl font-bold">Have an account ?</h2>
-        <p>Login now and continue</p>
+
+      {/* Side Image + Login Section */}
+      <div className="w-full lg:w-[30%] min-h-[300px] lg:min-h-screen bg-[url('/auth-bg.jpg')] bg-cover bg-center flex justify-center items-center flex-col text-white px-4 py-10">
+        <h2 className="text-3xl sm:text-4xl font-bold text-center">
+          Have an account?
+        </h2>
+        <p className="text-sm sm:text-base text-center mt-2">Login now and continue</p>
         <a
-          className="px-12 bg-white text-black py-2 rounded-full mt-8 font-semibold hover:bg-gray-200 transition-all duration-600"
+          className="px-10 sm:px-12 bg-white text-black py-2 rounded-full mt-6 font-semibold hover:bg-gray-200 transition-all duration-600"
           href="/"
         >
           Login

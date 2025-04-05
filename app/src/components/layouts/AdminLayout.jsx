@@ -1,14 +1,25 @@
 import React, { useEffect, useState } from "react";
 import encryptionModule from "../common/LocalStorageUtils";
 import { useNavigate } from "react-router";
-import { Link } from "react-router";
-import { UsersIcon, MenuIcon, XIcon, LogOut } from "lucide-react";
+import { Link, useLocation } from "react-router";
+import {
+  UsersIcon,
+  MenuIcon,
+  XIcon,
+  LogOut,
+  LayoutDashboard,
+} from "lucide-react";
+import { Dialog } from "@headlessui/react";
 import { toast } from "react-toastify";
+import logo from "../../assets/Only_Logo.png";
+
 
 const AdminLayout = ({ children }) => {
   const userLs = encryptionModule.becryptData("user");
   const navigate = useNavigate();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const location = useLocation();
+  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   useEffect(() => {
     if (userLs?.role !== "admin") {
@@ -20,52 +31,113 @@ const AdminLayout = ({ children }) => {
     setIsCollapsed(!isCollapsed);
   };
 
-  const handelLogout = () => {
+  const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
     toast.success("Logout successfully.");
     navigate("/");
   };
 
+  const handleLinkClick = () => {
+    setIsCollapsed(true);
+  };
+
   return (
     <div className="flex min-h-screen overflow-hidden">
       {/* Sidebar */}
       <div
-        className={`${
-          isCollapsed ? "min-w-16" : "min-w-56"
-        } bg-gray-800 text-white transition-all duration-300 p-4 flex flex-col`}
-      >
+  className={`transition-all duration-300 ease-in-out ${
+    isCollapsed ? "w-16" : "w-56"
+  } bg-gray-800 text-white p-4 flex flex-col relative`}
+>
+
+        {/* Logo */}
+        {!isCollapsed && (
+          <img
+            src={logo}
+            alt="Qlith Logo"
+            className="h-10 w-10 object-contain"
+          />
+        )}
+
+        {/* Collapse Button */}
         <button
           onClick={toggleSidebar}
-          className="mb-6 focus:outline-none self-end"
+          className={`${isCollapsed?"mb-6 mr-1.5 mt-2":"relative bottom-8"} focus:outline-none self-end`}
         >
           {isCollapsed ? <MenuIcon size={20} /> : <XIcon size={20} />}
         </button>
 
+        {/* Navigation */}
         <nav className="space-y-4">
-          <div>
-            <Link
-              to="/admin/users"
-              className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
-            >
-              <UsersIcon size={20} />
-              {!isCollapsed && <span>Users</span>}
-            </Link>
-          </div>
-
-          {/* Add more navigation items here */}
-          <button
-            onClick={handelLogout}
-            className="flex items-center gap-2 p-2 rounded absolute bottom-3 "
+          <Link
+            to="/admin/dashboard"
+            onClick={handleLinkClick}
+            className={`flex items-center gap-2 hover:bg-gray-700 p-2 rounded ${
+              location.pathname === "/admin/dashboard" ? "bg-gray-700" : ""
+            }`}
           >
-            {!isCollapsed && <span>Log Out</span>}
+            <LayoutDashboard size={20} />
+            {!isCollapsed && <span>Dashboard</span>}
+          </Link>
+
+          <Link
+            to="/admin/users"
+            onClick={handleLinkClick}
+            className={`flex items-center gap-2 hover:bg-gray-700 p-2 rounded ${
+              location.pathname === "/admin/users" ? "bg-gray-700" : ""
+            }`}
+          >
+            <UsersIcon size={20} />
+            {!isCollapsed && <span>Users</span>}
+          </Link>
+
+          <button
+            onClick={() => setShowLogoutModal(true)}
+            className="flex items-center gap-2 p-2 rounded absolute bottom-3"
+          >
             <LogOut size={20} />
+            {!isCollapsed && <span>Log Out</span>}
           </button>
         </nav>
       </div>
 
       {/* Main content */}
       <div className="flex-1 bg-gray-100 p-6 w-full">{children}</div>
+
+      {/* Logout Modal */}
+      <Dialog
+        open={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        className="relative z-50"
+      >
+        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <Dialog.Panel className="w-full max-w-sm rounded bg-white p-6 space-y-4">
+            <Dialog.Title className="text-lg font-bold">
+              Confirm Logout
+            </Dialog.Title>
+            <Dialog.Description>
+              Are you sure you want to log out? You will be redirected to the
+              login page.
+            </Dialog.Description>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={() => setShowLogoutModal(false)}
+                className="px-4 py-2 bg-gray-200 rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 bg-red-600 text-white rounded"
+              >
+                Logout
+              </button>
+            </div>
+          </Dialog.Panel>
+        </div>
+      </Dialog>
     </div>
   );
 };
